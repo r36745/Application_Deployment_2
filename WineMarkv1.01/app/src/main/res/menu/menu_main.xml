@@ -1,0 +1,14 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" tools:context=".MainActivity">
+
+
+    <item android:id="@+id/action_wine_search"
+        android:title="Wine Bars"
+        android:orderInCategory="100"
+        android:showAsAction="never"/>
+
+    <item android:id="@+id/action_wine_form"
+        android:title="Review"
+        android:orderInCategory="100"
+        android:showAsAction="never"/>
+</menu>
