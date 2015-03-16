@@ -26,6 +26,7 @@ public class DetailActivity extends Activity implements DetailFragment.DetailLis
         setContentView(R.layout.activity_detail);
 
         if (savedInstanceState == null) {
+            MapActivity mapActivity = new MapActivity();
             DetailFragment detailFragment = new DetailFragment();
             getFragmentManager().beginTransaction()
                     .replace(R.id.container, detailFragment, DetailFragment.TAG)

@@ -12,6 +12,11 @@ import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
+
 /**
  * Created by stevierose on 3/13/15.
  */
@@ -20,6 +25,7 @@ public class DetailFragment extends Fragment {
     ImageView mImgView;
     Uri mImgUri;
     private DetailListener mListener;
+    private GoogleMap mMap;
 
 
     public interface DetailListener{
@@ -42,6 +48,7 @@ public class DetailFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_detail, container, false);
+
     }
 
     @Override
@@ -57,5 +64,23 @@ public class DetailFragment extends Fragment {
         reviewerNotes.setText(mListener.notes());
         rating.setRating(mListener.getFloat());
         mImgView.setImageBitmap(BitmapFactory.decodeFile(mListener.getUri().getPath()));
+
+        try {
+            if (mMap == null) {
+
+                mMap = ((MapFragment) getFragmentManager().findFragmentById(R.id.map)).getMap();
+                mMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
+                mMap.setMyLocationEnabled(true);
+                mMap.setTrafficEnabled(true);
+                mMap.setIndoorEnabled(true);
+                mMap.setBuildingsEnabled(true);
+                mMap.getUiSettings().setZoomControlsEnabled(true);
+                mMap.addMarker(new MarkerOptions().position(new LatLng(25.18768659, -61.88652632)).title("Hello"));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
     }
 }
