@@ -2,7 +2,6 @@ package com.rosemak.winemarkv101;
 
 import android.app.Activity;
 import android.app.Fragment;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -13,9 +12,6 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapFragment;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
 
 /**
  * Created by stevierose on 3/13/15.
@@ -63,9 +59,9 @@ public class DetailFragment extends Fragment {
         reviewerPlace.setText(mListener.place());
         reviewerNotes.setText(mListener.notes());
         rating.setRating(mListener.getFloat());
-        mImgView.setImageBitmap(BitmapFactory.decodeFile(mListener.getUri().getPath()));
+       // mImgView.setImageBitmap(BitmapFactory.decodeFile(mListener.getUri().getPath()));
 
-        try {
+        /*try {
             if (mMap == null) {
 
                 mMap = ((MapFragment) getFragmentManager().findFragmentById(R.id.map)).getMap();
@@ -80,7 +76,7 @@ public class DetailFragment extends Fragment {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
+*/
 
     }
 }

@@ -11,7 +11,7 @@ import java.util.ArrayList;
 /**
  * Created by stevierose on 3/13/15.
  */
-public class DetailActivity extends Activity implements DetailFragment.DetailListener {
+public class DetailActivity extends Activity implements DetailFragment.DetailListener, ReviewerMapFragment.OnMapClick {
     public static final String TAG = "DetailActivity.TAG";
     private ArrayList<Reviewer> mArrayList;
     private Reviewer mReviewer;
@@ -26,11 +26,16 @@ public class DetailActivity extends Activity implements DetailFragment.DetailLis
         setContentView(R.layout.activity_detail);
 
         if (savedInstanceState == null) {
-            MapActivity mapActivity = new MapActivity();
+            ReviewerMapFragment mapFragment = new ReviewerMapFragment();
             DetailFragment detailFragment = new DetailFragment();
             getFragmentManager().beginTransaction()
                     .replace(R.id.container, detailFragment, DetailFragment.TAG)
                     .commit();
+
+            getFragmentManager().beginTransaction()
+                    .replace(R.id.container2, mapFragment, ReviewerMapFragment.TAG)
+                    .commit();
+
         }
 
         Intent getIntent = getIntent();
@@ -39,11 +44,25 @@ public class DetailActivity extends Activity implements DetailFragment.DetailLis
 
             mReviewer = (Reviewer) getIntent.getSerializableExtra("reviewer");
             Log.d("DETAILED Flag", "Reviews= " + mReviewer.getRating());
+            Log.d("FLAG", "Lat= "+ mReviewer.getmLat() + "Lng= " +mReviewer.getmLng());
             place = mReviewer.getPlace();
             notes = mReviewer.getNotes();
             mImg = Uri.parse(mReviewer.getmImg());
             ratingFloater = mReviewer.getRating();
+            lat = mReviewer.getmLat();
+            lng = mReviewer.getmLng();
 
+        } else if (getIntent.hasExtra("arrayReviewer")){
+
+            mArrayList = (ArrayList<Reviewer>) getIntent.getSerializableExtra("arrayReviewer");
+            for (Reviewer reviewer: mArrayList) {
+                place = reviewer.getPlace();
+                notes = reviewer.getNotes();
+                mImg = Uri.parse(reviewer.getmImg());
+                ratingFloater = reviewer.getRating();
+                lat = reviewer.getmLat();
+                lng = reviewer.getmLng();
+            }
         }
 
 
@@ -67,5 +86,20 @@ public class DetailActivity extends Activity implements DetailFragment.DetailLis
     @Override
     public float getFloat() {
         return ratingFloater;
+    }
+
+    @Override
+    public double onLat() {
+        return lat;
+    }
+
+    @Override
+    public double onLng() {
+        return lng;
+    }
+
+    @Override
+    public String onMapPlace() {
+        return place;
     }
 }

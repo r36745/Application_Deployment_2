@@ -11,9 +11,6 @@
     <uses-feature android:glEsVersion="0x00020000" android:required="true"/>
     <uses-feature android:name="android.hardware.camera2"
         android:required="true" />
-    <permission android:name="com.rosemak.winemarkv101.permission.MAPS_RECEIVE"
-        android:protectionLevel="signature"/>
-    <uses-permission android:name="com.rosemak.winemarkv101.permission.MAPS_RECEIVE"/>
 
     <application
         android:allowBackup="true"
@@ -38,7 +35,7 @@
 
 
         <activity android:name=".DetailActivity"
-            android:label="Detail Activity">
+            android:label="WineMark Notes">
 
         </activity>
 

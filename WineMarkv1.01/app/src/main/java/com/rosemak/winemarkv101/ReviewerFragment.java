@@ -196,10 +196,10 @@ public class ReviewerFragment extends Fragment implements LocationListener {
             mLocation.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 10, this);
 
             Location loc = mLocation.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-           // double lat = loc.getLatitude();
-           // double lng = loc.getLongitude();
-           // mReviewer.setmLat(lat);
-           // mReviewer.setmLng(lng);
+            double lat = loc.getLatitude();
+            double lng = loc.getLongitude();
+            mReviewer.setmLat(lat);
+            mReviewer.setmLng(lng);
 
         } else {
             new AlertDialog.Builder(getActivity())
@@ -221,7 +221,7 @@ public class ReviewerFragment extends Fragment implements LocationListener {
     @Override
     public void onResume() {
         super.onResume();
-       // enableGps();
+        enableGps();
     }
 
 
