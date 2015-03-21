@@ -1,6 +1,7 @@
 package com.rosemak.winemarkv101;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -22,12 +23,17 @@ public class MainActivity extends Activity implements ReviewerFragment.OnButtonC
     public static final String FILE_NAME = "newReviewFile.txt";
     private static final String MAIN = "mainActivity.Log";
     private Reviewer mReviewer;
+    Context mContext;
+    File file, external;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        external = this.getExternalFilesDir(null);
+        file = new File(external,FILE_NAME);
         MainFragment mainFragment = new MainFragment();
 
         Intent intent = getIntent();
@@ -35,12 +41,34 @@ public class MainActivity extends Activity implements ReviewerFragment.OnButtonC
         if (savedInstanceState == null) {
 
 
+            if (file.exists()) {
+                Log.d("FLAG", "FILE EXIST");
+                try {
+                    ObjectInputStream is = new ObjectInputStream(new FileInputStream(file));
+
+                    final ArrayList<Reviewer> reviewers = (ArrayList<Reviewer>) is.readObject();
+                    if (mArrayList == null) {
+                        mArrayList = new ArrayList<>();
+                        mArrayList = reviewers;
+                    }
+                    is.close();
+                    intent.putExtra(NAME_LIST, mArrayList);
+                    getFragmentManager().beginTransaction()
+                            .replace(R.id.container, mainFragment, MainFragment.TAG)
+                            .commit();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            } else {
+                Log.d("Flag", "No File Exist");
+                mArrayList = new ArrayList<>();
+                intent.putExtra(NAME_LIST, mArrayList);
+                getFragmentManager().beginTransaction()
+                        .replace(R.id.container, mainFragment, MainFragment.TAG)
+                        .commit();
+            }
             //check to see if arrayList is empty
-            mArrayList = new ArrayList<>();
-            intent.putExtra(NAME_LIST, mArrayList);
-            getFragmentManager().beginTransaction()
-                    .replace(R.id.container, mainFragment, MainFragment.TAG)
-                    .commit();
+
         }
 
     }
@@ -78,50 +106,8 @@ public class MainActivity extends Activity implements ReviewerFragment.OnButtonC
 
     @Override
     public void review(Reviewer review) {
-        File external = this.getExternalFilesDir(null);
-        final File file = new File(external,FILE_NAME);
-        if (file.exists()) {
-            try {
-                ObjectInputStream is = new ObjectInputStream(new FileInputStream(file));
-
-                final ArrayList<Reviewer> reviewers = (ArrayList<Reviewer>) is.readObject();
-                is.close();
-
-
-                if (reviewers != null) {
-                    mReviewer = new Reviewer("", 0);
-                    for (Reviewer reviewer: reviewers) {
-
-                        String place = reviewer.getPlace();
-                        String notes = reviewer.getNotes();
-                        float rating = reviewer.getRating();
-                        double mLat = reviewer.getmLat();
-                        double mLng = reviewer.getmLng();
-                        String mImg = reviewer.getmImg();
-                        mReviewer.setPlace(place);
-                        mReviewer.setNotes(notes);
-                        mReviewer.setRating(rating);
-                        mReviewer.setmLat(mLat);
-                        mReviewer.setmLng(mLng);
-                        mReviewer.setmImg(mImg);
-                        Log.d("ARRAYLISTFLAG", "MELISTCOUNT= " +mArrayList.size());
-                        mArrayList.add(mReviewer);
-                        Log.d("ARRAYLISTFLAG", "MELISTCOUNT1= " +mArrayList.size());
-
-                    }
-                }
-            } catch (Exception e) {
-
-                e.printStackTrace();
-            }
-        } else {
-
-            Log.d("FLAG", "Error in the new object");
-        }
-
-        Log.d("ARRAYLISTFLAG", "MELISTCOUNT2= " +mArrayList.size());
+        Log.d(MAIN, "Main Activity Rating= " + review.getRating());
         mArrayList.add(review);
-        Log.d("ARRAYLISTFLAG", "MELISTCOUNT3= " + mArrayList.size());
         writeToFile(this, FILE_NAME, mArrayList);
         MainFragment mainFragment = MainFragment.newInstance(mArrayList);
         getFragmentManager().beginTransaction()
@@ -147,13 +133,23 @@ public class MainActivity extends Activity implements ReviewerFragment.OnButtonC
         startActivity(detailIntent);
     }
 
+
+
     @Override
+    public void arrayReviewer(Reviewer arrayReviewer) {
+        //Log.d("Flag","ME Array= " +arrayReviewer.get(0).getPlace());
+        Intent detailIntent = new Intent(this, DetailActivity.class);
+        detailIntent.putExtra("reviewer", arrayReviewer);
+        startActivity(detailIntent);
+    }
+
+    /*@Override
     public void arrayReviewer(ArrayList<Reviewer> arrayReviewer) {
         Log.d("Flag","ME Array= " +arrayReviewer.get(0).getPlace());
         Intent detailIntent = new Intent(this, DetailActivity.class);
         detailIntent.putExtra("arrayReviewer", arrayReviewer);
         startActivity(detailIntent);
-    }
+    }*/
 
 
     public void writeToFile(Activity main, String _fileName, ArrayList<Reviewer> reviewer) {
@@ -163,6 +159,7 @@ public class MainActivity extends Activity implements ReviewerFragment.OnButtonC
 
 
         File file = new File(external, _fileName);
+
 
 
         try {

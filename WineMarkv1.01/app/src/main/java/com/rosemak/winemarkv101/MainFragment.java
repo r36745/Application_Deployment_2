@@ -36,7 +36,7 @@ public class MainFragment extends Fragment {
     public interface OnListClickListener{
         public void reviewerPos(int pos);
         public void reviewer(Reviewer reviewer);
-        public void arrayReviewer(ArrayList<Reviewer> arrayReviewer);
+        public void arrayReviewer(Reviewer arrayReviewer);
     }
 
     @Override
@@ -116,7 +116,7 @@ public class MainFragment extends Fragment {
 
                         Log.d("Flagged", "Reviewer= " +reviewers.get(position).getPlace());
                         Log.d("FLAG", "Touched");
-                        mListener.arrayReviewer(reviewers);
+                        mListener.arrayReviewer(reviewers.get(position));
                                 /*for (int i=0; i < reviewers.size(); i++) {
                                      reviewers.get(i).getPlace();
                                      reviewers.get(i).getNotes();

@@ -2,6 +2,7 @@ package com.rosemak.winemarkv101;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -59,7 +60,7 @@ public class DetailFragment extends Fragment {
         reviewerPlace.setText(mListener.place());
         reviewerNotes.setText(mListener.notes());
         rating.setRating(mListener.getFloat());
-       // mImgView.setImageBitmap(BitmapFactory.decodeFile(mListener.getUri().getPath()));
+       mImgView.setImageBitmap(BitmapFactory.decodeFile(mListener.getUri().getPath()));
 
         /*try {
             if (mMap == null) {

@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 
 /**
  * Created by stevierose on 3/5/15.
@@ -27,6 +28,9 @@ public class SplashScreen extends Activity {
                 public void run() {
 
                     Intent intent = new Intent(SplashScreen.this, MainActivity.class);
+                    if (intent != null){
+                        Log.d("FLAG", "Something Here");
+                    }
                     startActivity(intent);
 
                     finish();
@@ -35,8 +39,14 @@ public class SplashScreen extends Activity {
 
             }, SPLASH_SCREEN_DELAY);
 
-            splashing = true;
+
         }
 
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        splashing = true;
     }
 }
