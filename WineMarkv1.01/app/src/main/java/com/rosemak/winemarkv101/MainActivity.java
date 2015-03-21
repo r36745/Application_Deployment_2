@@ -8,8 +8,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 
@@ -76,11 +78,50 @@ public class MainActivity extends Activity implements ReviewerFragment.OnButtonC
 
     @Override
     public void review(Reviewer review) {
-        Log.d(MAIN, "Main Activity Rating= " + review.getRating());
-        if (mArrayList.contains(review)){
-            Log.d("Flag", "Ted Video");
+        File external = this.getExternalFilesDir(null);
+        final File file = new File(external,FILE_NAME);
+        if (file.exists()) {
+            try {
+                ObjectInputStream is = new ObjectInputStream(new FileInputStream(file));
+
+                final ArrayList<Reviewer> reviewers = (ArrayList<Reviewer>) is.readObject();
+                is.close();
+
+
+                if (reviewers != null) {
+                    mReviewer = new Reviewer("", 0);
+                    for (Reviewer reviewer: reviewers) {
+
+                        String place = reviewer.getPlace();
+                        String notes = reviewer.getNotes();
+                        float rating = reviewer.getRating();
+                        double mLat = reviewer.getmLat();
+                        double mLng = reviewer.getmLng();
+                        String mImg = reviewer.getmImg();
+                        mReviewer.setPlace(place);
+                        mReviewer.setNotes(notes);
+                        mReviewer.setRating(rating);
+                        mReviewer.setmLat(mLat);
+                        mReviewer.setmLng(mLng);
+                        mReviewer.setmImg(mImg);
+                        Log.d("ARRAYLISTFLAG", "MELISTCOUNT= " +mArrayList.size());
+                        mArrayList.add(mReviewer);
+                        Log.d("ARRAYLISTFLAG", "MELISTCOUNT1= " +mArrayList.size());
+
+                    }
+                }
+            } catch (Exception e) {
+
+                e.printStackTrace();
+            }
+        } else {
+
+            Log.d("FLAG", "Error in the new object");
         }
+
+        Log.d("ARRAYLISTFLAG", "MELISTCOUNT2= " +mArrayList.size());
         mArrayList.add(review);
+        Log.d("ARRAYLISTFLAG", "MELISTCOUNT3= " + mArrayList.size());
         writeToFile(this, FILE_NAME, mArrayList);
         MainFragment mainFragment = MainFragment.newInstance(mArrayList);
         getFragmentManager().beginTransaction()
