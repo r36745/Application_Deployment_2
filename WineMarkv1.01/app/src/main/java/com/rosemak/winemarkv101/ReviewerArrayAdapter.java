@@ -49,6 +49,9 @@ public class ReviewerArrayAdapter extends BaseAdapter {
         RatingBar ratingBar = (RatingBar) convertView.findViewById(R.id.placeRating);
         ratingBar.setRating(reviewer.getRating());
 
+        TextView date = (TextView) convertView.findViewById(R.id.date);
+        date.setText(reviewer.getmMonth() + "/" + reviewer.getmDay() + "/" + reviewer.getmYear());
+
         return convertView;
     }
 }

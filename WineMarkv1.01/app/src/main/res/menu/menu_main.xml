@@ -5,7 +5,7 @@
 
 
     <item android:id="@+id/action_wine_form"
-        android:title="Review"
+        android:title="Add WiReview"
         android:orderInCategory="100"
         android:showAsAction="never"/>
 </menu>

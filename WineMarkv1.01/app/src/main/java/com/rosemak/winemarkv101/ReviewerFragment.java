@@ -27,6 +27,7 @@ import android.widget.RatingBar;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 /**
@@ -74,7 +75,7 @@ public class ReviewerFragment extends Fragment implements LocationListener {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         
-        mReviewer = new Reviewer("", 0);
+        mReviewer = new Reviewer("", 0, 0, 0, 0);
         mLocation = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
 
     }
@@ -136,6 +137,7 @@ public class ReviewerFragment extends Fragment implements LocationListener {
                 mReviewer.setmImg(myImage);
                 mReviewer.setPlace(places);
                 mReviewer.setNotes(reviews);
+                getCurrentDate();
                 mListener.review(mReviewer);
 
             }
@@ -232,4 +234,17 @@ public class ReviewerFragment extends Fragment implements LocationListener {
 
         mLocation.removeUpdates(this);
     }
+
+    public void getCurrentDate() {
+        Calendar calendar = Calendar.getInstance();
+        int cDay = calendar.get(Calendar.DAY_OF_MONTH);
+        int cMonth = calendar.get(Calendar.MONTH) +1;
+        int year = calendar.get(Calendar.YEAR);
+        mReviewer.setmDay(cDay);
+        mReviewer.setmMonth(cMonth);
+        mReviewer.setmYear(year);
+        Log.d("MainActivity", "Day= " + cDay + "Month= " + cMonth);
+        Log.d("MainActivity", "Year= " + year);
+    }
+
 }
